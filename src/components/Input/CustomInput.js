@@ -25,6 +25,7 @@ export const CustomTextInput = ({
         ...styles.input,
         backgroundColor: isInputFocused ? "#ffffff" : "#F6F6F6",
         borderColor: isInputFocused ? "#FF6C00" : "#E8E8E8",
+        color: "#212121",
       }}
       onChangeText={onInputChange}
       value={value}

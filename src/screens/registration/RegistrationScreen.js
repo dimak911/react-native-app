@@ -4,44 +4,21 @@ import {
   View,
   Image,
   Text,
-  TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native";
-import { useCallback, useState } from "react";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
+import { useState } from "react";
 import { CustomTextInput } from "../../components/Input/CustomInput";
-
-SplashScreen.preventAutoHideAsync();
 
 const bgImage = require("../../../assets/bg.jpeg");
 const plusIcon = require("../../../assets/add.png");
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [passwordIsHidden, setPasswordIsHidden] = useState(true);
-  const [fontsLoaded] = useFonts({
-    "Roboto-Regular": require("../../../assets/fonts/Roboto/Roboto-Regular.ttf"),
-    "Roboto-Medium": require("../../../assets/fonts/Roboto/Roboto-Medium.ttf"),
-    "Roboto-Bold": require("../../../assets/fonts/Roboto/Roboto-Bold.ttf"),
-  });
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const onChangeLogin = (value) => {
     setLogin(value);
@@ -58,97 +35,85 @@ const RegistrationScreen = () => {
   };
 
   const handleSubmit = () => {
-    //
+    const data = {
+      login,
+      email,
+      password,
+    };
+
+    console.log(data);
   };
 
   const switchScreens = () => {
     //
   };
 
-  const resetKeyboard = () => {
-    Keyboard.dismiss();
-    setIsShowKeyboard(false);
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={() => resetKeyboard()}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <ImageBackground
-          source={bgImage}
-          resizeMode="cover"
-          style={styles.image}
+    <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
+        <View
+          style={{
+            ...styles.fromWrapper,
+            marginBottom: isShowKeyboard ? -190 : 0,
+          }}
         >
-          <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-          >
-            <View
-              style={{
-                ...styles.fromWrapper,
-                marginBottom: isShowKeyboard ? -190 : 0,
-              }}
-            >
-              <View style={styles.avatar}>
-                <Image source={plusIcon} style={styles.plus} />
-              </View>
-              <Text style={styles.title}>Регистрация</Text>
-              <View style={styles.form}>
-                <CustomTextInput
-                  onInputChange={onChangeLogin}
-                  value={login}
-                  placeholder={"Логин"}
-                  setIsShowKeyboard={setIsShowKeyboard}
-                />
-                <CustomTextInput
-                  onInputChange={onChangeEmail}
-                  value={email}
-                  placeholder={"Адрес электронной почты"}
-                  setIsShowKeyboard={setIsShowKeyboard}
-                />
-                <View style={styles.passwordWrapper}>
-                  <CustomTextInput
-                    onInputChange={onChangePassword}
-                    value={password}
-                    placeholder={"Пароль"}
-                    setIsShowKeyboard={setIsShowKeyboard}
-                    secureTextEntry={passwordIsHidden}
-                  />
-                  <TouchableOpacity
-                    style={styles.showPassBtn}
-                    onPress={onShowPassBtn}
-                    activeOpacity={0.8}
-                  >
-                    <Text>{passwordIsHidden ? "Показать" : "Скрыть"}</Text>
-                  </TouchableOpacity>
-                </View>
-                <TouchableOpacity
-                  style={styles.submitBtn}
-                  onPress={handleSubmit}
-                  activeOpacity={0.8}
-                >
-                  <Text style={styles.submitBtnText}>Зарегистрироваться</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.switchBtn}
-                  onPress={switchScreens}
-                  activeOpacity={0.8}
-                >
-                  <Text style={styles.switchBtnText}>
-                    Уже есть аккаунт? Войти
-                  </Text>
-                </TouchableOpacity>
-              </View>
+          <View style={styles.avatar}>
+            <Image source={plusIcon} style={styles.plus} />
+          </View>
+          <Text style={styles.title}>Регистрация</Text>
+          <View style={styles.form}>
+            <CustomTextInput
+              onInputChange={onChangeLogin}
+              value={login}
+              placeholder={"Логин"}
+              setIsShowKeyboard={setIsShowKeyboard}
+            />
+            <CustomTextInput
+              onInputChange={onChangeEmail}
+              value={email}
+              placeholder={"Адрес электронной почты"}
+              setIsShowKeyboard={setIsShowKeyboard}
+            />
+            <View style={styles.passwordWrapper}>
+              <CustomTextInput
+                onInputChange={onChangePassword}
+                value={password}
+                placeholder={"Пароль"}
+                setIsShowKeyboard={setIsShowKeyboard}
+                secureTextEntry={passwordIsHidden}
+              />
+              <TouchableOpacity
+                style={styles.showPassBtn}
+                onPress={onShowPassBtn}
+                activeOpacity={0.8}
+              >
+                <Text>{passwordIsHidden ? "Показать" : "Скрыть"}</Text>
+              </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+            <TouchableOpacity
+              style={styles.submitBtn}
+              onPress={handleSubmit}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.submitBtnText}>Зарегистрироваться</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.switchBtn}
+              onPress={switchScreens}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.switchBtnText}>Уже есть аккаунт? Войти</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   image: {
     flex: 1,
     justifyContent: "flex-end",
