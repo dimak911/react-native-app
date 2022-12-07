@@ -7,8 +7,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import RegistrationScreen from "./src/screens/registration/RegistrationScreen";
-import LoginScreen from "./src/screens/login/LoginScreen";
+import RegistrationScreen from "./src/screens/Registration/RegistrationScreen";
+import LoginScreen from "./src/screens/Login/LoginScreen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,10 +39,10 @@ export default function App() {
   return (
     <TouchableWithoutFeedback onPress={() => resetKeyboard()}>
       <View style={styles.container} onLayout={onLayoutRootView}>
-        {/* <RegistrationScreen
+        <RegistrationScreen
           isShowKeyboard={isShowKeyboard}
           setIsShowKeyboard={setIsShowKeyboard}
-        /> */}
+        />
         {/* <LoginScreen
           isShowKeyboard={isShowKeyboard}
           setIsShowKeyboard={setIsShowKeyboard}
