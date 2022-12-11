@@ -10,15 +10,18 @@ import {
 import { useState } from "react";
 import { CustomTextInput } from "../../components/Input/CustomInput";
 import { styles } from "./StylesRegistrationScreen";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const bgImage = require("../../../assets/bg.jpeg");
 const plusIcon = require("../../../assets/add.png");
 
-const RegistrationScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
+const RegistrationScreen = ({ navigation }) => {
+  const [isFocused, setIsFocused] = useState(false);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordIsHidden, setPasswordIsHidden] = useState(true);
+  const { user, dispatch } = useAuthContext();
 
   const onChangeLogin = (value) => {
     setLogin(value);
@@ -42,10 +45,7 @@ const RegistrationScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
     };
 
     console.log(data);
-  };
-
-  const switchScreens = () => {
-    //
+    dispatch({ type: "REGISTER", payload: { login, email } });
   };
 
   return (
@@ -56,7 +56,7 @@ const RegistrationScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
         <View
           style={{
             ...styles.fromWrapper,
-            transform: [{ translateY: isShowKeyboard ? 190 : 0 }],
+            transform: [{ translateY: isFocused ? 190 : 0 }],
           }}
         >
           <View style={styles.avatar}>
@@ -68,20 +68,20 @@ const RegistrationScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
               onInputChange={onChangeLogin}
               value={login}
               placeholder={"Логин"}
-              setIsShowKeyboard={setIsShowKeyboard}
+              setIsFocused={setIsFocused}
             />
             <CustomTextInput
               onInputChange={onChangeEmail}
               value={email}
               placeholder={"Адрес электронной почты"}
-              setIsShowKeyboard={setIsShowKeyboard}
+              setIsFocused={setIsFocused}
             />
             <View style={styles.passwordWrapper}>
               <CustomTextInput
                 onInputChange={onChangePassword}
                 value={password}
                 placeholder={"Пароль"}
-                setIsShowKeyboard={setIsShowKeyboard}
+                setIsFocused={setIsFocused}
                 secureTextEntry={passwordIsHidden}
               />
               <TouchableOpacity
@@ -101,8 +101,8 @@ const RegistrationScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.switchBtn}
-              onPress={switchScreens}
               activeOpacity={0.8}
+              onPress={() => navigation.navigate("Login")}
             >
               <Text style={styles.switchBtnText}>Уже есть аккаунт? Войти</Text>
             </TouchableOpacity>

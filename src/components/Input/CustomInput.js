@@ -5,18 +5,18 @@ export const CustomTextInput = ({
   onInputChange,
   value,
   placeholder,
-  setIsShowKeyboard,
+  setIsFocused,
   secureTextEntry,
 }) => {
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   const handleOnFocus = () => {
-    setIsShowKeyboard(true);
+    setIsFocused(true);
     setIsInputFocused(true);
   };
 
   const handleOnBlur = () => {
-    setIsShowKeyboard(false);
+    setIsFocused(false);
     setIsInputFocused(false);
   };
   return (

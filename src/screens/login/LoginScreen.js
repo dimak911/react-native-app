@@ -9,10 +9,13 @@ import {
 import { useState } from "react";
 import { CustomTextInput } from "../../components/Input/CustomInput";
 import { styles } from "./StylesLoginScreen";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const bgImage = require("../../../assets/bg.jpeg");
 
-const LoginScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
+const LoginScreen = ({ navigation }) => {
+  const { user, dispatch } = useAuthContext();
+  const [isFocused, setIsFocused] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordIsHidden, setPasswordIsHidden] = useState(true);
@@ -34,10 +37,8 @@ const LoginScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
     };
 
     console.log(data);
-  };
 
-  const switchScreens = () => {
-    //
+    dispatch({ type: "LOGIN", payload: { email } });
   };
 
   return (
@@ -48,7 +49,7 @@ const LoginScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
         <View
           style={{
             ...styles.fromWrapper,
-            transform: [{ translateY: isShowKeyboard ? 240 : 0 }],
+            transform: [{ translateY: isFocused ? 240 : 0 }],
           }}
         >
           <Text style={styles.title}>Войти</Text>
@@ -57,14 +58,14 @@ const LoginScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
               onInputChange={onChangeEmail}
               value={email}
               placeholder={"Адрес электронной почты"}
-              setIsShowKeyboard={setIsShowKeyboard}
+              setIsFocused={setIsFocused}
             />
             <View style={styles.passwordWrapper}>
               <CustomTextInput
                 onInputChange={onChangePassword}
                 value={password}
                 placeholder={"Пароль"}
-                setIsShowKeyboard={setIsShowKeyboard}
+                setIsFocused={setIsFocused}
                 secureTextEntry={passwordIsHidden}
               />
               <TouchableOpacity
@@ -84,7 +85,7 @@ const LoginScreen = ({ isShowKeyboard, setIsShowKeyboard }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.switchBtn}
-              onPress={switchScreens}
+              onPress={() => navigation.navigate("Registration")}
               activeOpacity={0.8}
             >
               <Text style={styles.switchBtnText}>
