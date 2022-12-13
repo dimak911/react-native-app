@@ -1,18 +1,9 @@
-import { Button, Text, View } from "react-native";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { Text, View } from "react-native";
 
 export default function PostsScreen() {
-  const { user, dispatch } = useAuthContext();
-
   return (
-    <View>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>PostsScreen</Text>
-      <Button
-        title="Log out"
-        onPress={() => {
-          dispatch({ type: "LOGOUT" });
-        }}
-      />
     </View>
   );
 }
